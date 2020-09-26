@@ -1,11 +1,14 @@
 package club.plus1.client;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,7 +25,10 @@ public class MainActivity extends AppCompatActivity {
         api = ApiConfiguration.getApi();
     }
 
-    public void onClick(View view){
-        api.user(userName.getText().toString());
+    public void onClick(View view) {
+        api.user(userName.getText().toString())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 }

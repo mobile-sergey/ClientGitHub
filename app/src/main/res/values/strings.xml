@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Client</string>
+    <string name="button">Показать</string>
 </resources>
