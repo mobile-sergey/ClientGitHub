@@ -2,6 +2,8 @@ package club.plus1.client;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Date;
 
 public class GitHubUser {
@@ -32,4 +34,11 @@ public class GitHubUser {
     @SerializedName("updated_at")
     Date updatedAt;
     //"2008-01-14T04:33:35Z"
+
+    @NotNull
+    @Override
+    public String toString(){
+        return "login: " + login + "\n"
+        + "location: " + location;
+    }
 }
