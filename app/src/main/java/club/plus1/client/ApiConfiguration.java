@@ -1,6 +1,12 @@
 package club.plus1.client;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import okhttp3.OkHttp;
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiConfiguration {
 
@@ -17,8 +23,13 @@ public class ApiConfiguration {
     }
 
     private ApiConfiguration(){
+        Gson gson = new GsonBuilder().setLenient().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").create();
+        OkHttpClient client = new OkHttpClient.Builder().build();
+
         Retrofit retrofit = new Retrofit.Builder()
+                .client(client)
                 .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         api = retrofit.create(ApiInterface.class);
