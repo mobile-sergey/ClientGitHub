@@ -7,5 +7,5 @@ import retrofit2.http.Path;
 public interface ApiInterface {
 
     @GET("users/{user}")
-    Observable<GitHubUser> user(@Path("user") String user);
+    Observable<GitHubUserDetail> user(@Path("user") String user);
 }
