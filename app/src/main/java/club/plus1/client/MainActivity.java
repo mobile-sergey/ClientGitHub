@@ -1,6 +1,5 @@
 package club.plus1.client;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -30,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
         disposables = new CompositeDisposable();
     }
 
-    @SuppressLint("CheckResult")
     public void onClick(View view) {
         disposables.add(
         api.user(userName.getText().toString())
