@@ -5,22 +5,8 @@
     android:layout_height="match_parent"
     android:layout_margin="10dp"
     android:orientation="vertical"
-    tools:context=".DetailActivity">
-
-    <EditText
-        android:id="@+id/userName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        tools:ignore="Autofill,LabelFor" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onClick"
-        android:text="@string/button" />
+    tools:context=".DetailActivity"
+    tools:ignore="UseCompoundDrawables">
 
     <ImageView
         android:id="@+id/imageView"

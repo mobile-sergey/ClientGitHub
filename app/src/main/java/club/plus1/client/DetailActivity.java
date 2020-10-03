@@ -17,7 +17,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DetailActivity extends AppCompatActivity {
 
-    EditText userName;
     TextView textView;
     ImageView imageView;
     ApiInterface api;
@@ -27,27 +26,25 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        userName = findViewById(R.id.userName);
         textView = findViewById(R.id.textView);
         imageView = findViewById(R.id.imageView);
         api = ApiConfiguration.getApi();
         disposables = new CompositeDisposable();
-    }
-
-    public void onClick(View view) {
-        disposables.add(
-        api.user(userName.getText().toString())
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(
-        (user) -> {
-            textView.setText(user.toString());
-            Glide.with(this).load(user.photo).into(imageView);
-        },
-        (error) -> {
-            error.printStackTrace();
-            Toast.makeText(this, error.getMessage(), Toast.LENGTH_LONG).show();
-        }));
+        if (getIntent().getExtras() != null){
+            disposables.add(
+                api.user(getIntent().getStringExtra("login"))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        (user) -> {
+                            textView.setText(user.toString());
+                            Glide.with(this).load(user.photo).into(imageView);
+                        },
+                        (error) -> {
+                            error.printStackTrace();
+                            Toast.makeText(this, error.getMessage(), Toast.LENGTH_LONG).show();
+                        }));
+        }
     }
 
     @Override

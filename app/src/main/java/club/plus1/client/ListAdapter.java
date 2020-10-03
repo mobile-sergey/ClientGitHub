@@ -1,10 +1,12 @@
 package club.plus1.client;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,6 +38,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         GitHubUser user = list.get(position);
         holder.textItem.setText(user.toString());
         Glide.with(context).load(user.photo).into(holder.imageItem);
+        holder.item.setOnClickListener(v -> {
+            Intent intent = new Intent(context, DetailActivity.class);
+            intent.putExtra("login", user.login);
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -47,11 +54,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
         ImageView imageItem;
         TextView textItem;
+        LinearLayout item;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageItem = itemView.findViewById(R.id.imageItem);
             textItem = itemView.findViewById(R.id.textItem);
+            item = itemView.findViewById(R.id.item);
         }
     }
 }
