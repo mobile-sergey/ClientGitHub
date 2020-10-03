@@ -43,9 +43,9 @@ public class ListActivity extends AppCompatActivity {
         disposables.add(api.search(textSearch.getText().toString())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((users) -> {
+                .subscribe((search) -> {
                     list.clear();
-                    list.addAll(users);
+                    list.addAll(search.items);
                     adapter.notifyDataSetChanged();
                 }, (error) -> Toast.makeText(this, "При поиске возникла ошибка:\n"+error.getMessage(),
                         Toast.LENGTH_LONG).show()));
