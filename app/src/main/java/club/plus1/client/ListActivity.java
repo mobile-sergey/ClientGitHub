@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class ListActivity extends AppCompatActivity {
     List<GitHubUser> list;
     ApiInterface api;
     private CompositeDisposable disposables;
+    private int page;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,18 +40,44 @@ public class ListActivity extends AppCompatActivity {
         textSearch = findViewById(R.id.textSearch);
         api = ApiConfiguration.getApi();
         disposables = new CompositeDisposable();
+        page = 1;
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NotNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (!recyclerView.canScrollVertically(1)) {
+                    page++;
+                    search();
+                } else if (!recyclerView.canScrollVertically(-1)){
+                    page = 1;
+                    search();
+                }
+            }
+        });
     }
 
     public void onClick(View view){
-        disposables.add(api.search(textSearch.getText().toString())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((search) -> {
+        page = 1;
+        search();
+    }
+
+    private void search(){
+        if (textSearch.getText().toString().isEmpty()){
+            list.clear();
+        } else {
+            disposables.add(api.search(textSearch.getText().toString(), "followers", page, 30)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe((search) -> {
+                if (page == 1){
                     list.clear();
-                    list.addAll(search.items);
-                    adapter.notifyDataSetChanged();
-                }, (error) -> Toast.makeText(this, "При поиске возникла ошибка:\n"+error.getMessage(),
-                        Toast.LENGTH_LONG).show()));
+                }
+                list.addAll(search.items);
+                adapter.notifyDataSetChanged();
+            }, (error) -> Toast.makeText(this, "При поиске возникла ошибка:\n" + error.getMessage(),
+                    Toast.LENGTH_LONG).show()));
+        }
     }
 
     @Override

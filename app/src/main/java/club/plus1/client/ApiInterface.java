@@ -11,5 +11,8 @@ public interface ApiInterface {
     Observable<GitHubUserDetail> user(@Path("user") String user);
 
     @GET("search/users")
-    Observable<GitHubSearch> search(@Query("q") String q);
+    Observable<GitHubSearch> search(@Query("q") String q,
+                                    @Query("sort") String sort,
+                                    @Query("page") int page,
+                                    @Query("per_page") int perPage);
 }
