@@ -1,5 +1,6 @@
 package club.plus1.client;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ public class DetailActivity extends AppCompatActivity {
     ImageView imageView;
     ApiInterface api;
     private CompositeDisposable disposables;
+    String html;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class DetailActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         (user) -> {
+                            html = user.html;
                             textView.setText(user.toString());
                             Glide.with(this).load(user.photo).into(imageView);
                         },
@@ -45,6 +48,12 @@ public class DetailActivity extends AppCompatActivity {
                             Toast.makeText(this, error.getMessage(), Toast.LENGTH_LONG).show();
                         }));
         }
+    }
+
+    public void onClick(View view){
+        Intent intent = new Intent(this, WebActivity.class);
+        intent.putExtra("html", html);
+        this.startActivity(intent);
     }
 
     @Override

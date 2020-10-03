@@ -35,6 +35,8 @@ public class GitHubUserDetail {
     Date createdAt;
     @SerializedName("updated_at")
     Date updatedAt;
+    @SerializedName("html_url")
+    String html;
     //"2008-01-14T04:33:35Z"
 
     @NotNull
